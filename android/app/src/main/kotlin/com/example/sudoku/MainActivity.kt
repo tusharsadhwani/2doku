@@ -1,4 +1,4 @@
-package com.example.sudoku
+package com.tusharsadhwani.sudoku
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "872394344870",
+    "firebase_url": "https://sudoku-flutter.firebaseio.com",
+    "project_id": "sudoku-flutter",
+    "storage_bucket": "sudoku-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872394344870:android:3d1a0b83a4f2431c396767",
+        "android_client_info": {
+          "package_name": "com.tusharsadhwani.sudoku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "872394344870-vhmmop41u01l6q9g8dcpn8lk2l88v33b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tusharsadhwani.sudoku",
+            "certificate_hash": "cfc81faa69f788aa16c333a1f108ce06856bbd1c"
+          }
+        },
+        {
+          "client_id": "872394344870-l4vp7regkkn6ob7r7pkfli2pcqh3a1sj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW46e08XU4e0RiPsy0CRNuDkJ4KXrOY1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "872394344870-l4vp7regkkn6ob7r7pkfli2pcqh3a1sj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
