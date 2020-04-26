@@ -25,12 +25,16 @@ class _SudokuState extends State<Sudoku> {
   // ];
   var grid = List.generate(
       9, (_) => List.generate(9, (_) => {'value': -1, 'prefilled': false}));
+  var markings = List.generate(9, (_) => List.generate(9, (_) => Set<int>()));
   int selectedX;
   int selectedY;
+  bool markingMode = false;
 
   @override
   void initState() {
     super.initState();
+    markings[0][0].add(1);
+    markings[0][0].add(8);
     http.get('https://sugoku.herokuapp.com/board?difficulty=easy').then((res) {
       setState(() {
         final data = jsonDecode(res.body);
@@ -61,8 +65,32 @@ class _SudokuState extends State<Sudoku> {
     final y = selectedY;
     if (x < 0 || x > 8 || y < 0 || y > 8) return;
     if (grid[x][y]['prefilled']) return;
+
+    if (markingMode) {
+      if (markings[x][y].contains(value))
+        setState(() {
+          markings[x][y].remove(value);
+        });
+      else
+        setState(() {
+          markings[x][y].add(value);
+        });
+      if (grid[x][y]['value'] as int > 0)
+        setState(() {
+          grid[x][y]['value'] = 0;
+        });
+    } else {
+      if (grid[x][y]['value'] == value) value = 0;
+      setState(() {
+        grid[x][y]['value'] = value;
+        markings[x][y].clear();
+      });
+    }
+  }
+
+  void toggleMarkingMode() {
     setState(() {
-      grid[x][y]['value'] = value;
+      markingMode = !markingMode;
     });
   }
 
@@ -78,14 +106,20 @@ class _SudokuState extends State<Sudoku> {
     return Column(
       children: <Widget>[
         Expanded(
-          child:
-              SudokuGrid(grid, selectedX, selectedY, setSelected, setMessage),
+          child: SudokuGrid(
+            grid,
+            markings,
+            selectedX,
+            selectedY,
+            setSelected,
+            setMessage,
+          ),
         ),
         Text(
           testMessage,
           style: TextStyle(color: Colors.red),
         ),
-        SudokuButtons(setGridValue),
+        SudokuButtons(setGridValue, markingMode, toggleMarkingMode),
       ],
     );
   }
