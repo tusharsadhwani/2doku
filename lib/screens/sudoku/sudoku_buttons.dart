@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SudokuButtons extends StatelessWidget {
+  final Function setGridValue;
+  SudokuButtons(this.setGridValue);
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -9,20 +11,20 @@ class SudokuButtons extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SudokuButton(1),
-            SudokuButton(2),
-            SudokuButton(3),
-            SudokuButton(4),
-            SudokuButton(5),
+            SudokuButton(1, setGridValue),
+            SudokuButton(2, setGridValue),
+            SudokuButton(3, setGridValue),
+            SudokuButton(4, setGridValue),
+            SudokuButton(5, setGridValue),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SudokuButton(6),
-            SudokuButton(7),
-            SudokuButton(8),
-            SudokuButton(9),
+            SudokuButton(6, setGridValue),
+            SudokuButton(7, setGridValue),
+            SudokuButton(8, setGridValue),
+            SudokuButton(9, setGridValue),
           ],
         ),
       ],
@@ -32,7 +34,8 @@ class SudokuButtons extends StatelessWidget {
 
 class SudokuButton extends StatelessWidget {
   final int value;
-  SudokuButton(this.value);
+  final Function setGridValue;
+  SudokuButton(this.value, this.setGridValue);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,11 +44,14 @@ class SudokuButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(5.0),
         color: Colors.grey.shade300,
       ),
-      child: SizedBox(
-        width: 50,
-        height: 50,
-        child: FittedBox(
-          child: Text('$value'),
+      child: InkWell(
+        onTap: () => setGridValue(value),
+        child: SizedBox(
+          width: 50,
+          height: 50,
+          child: FittedBox(
+            child: Text('$value'),
+          ),
         ),
       ),
     );

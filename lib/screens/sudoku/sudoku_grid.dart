@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SudokuGrid extends StatelessWidget {
+class SudokuGrid extends StatefulWidget {
+  final List grid;
+  final int selectedX;
+  final int selectedY;
+  final Function setMessage;
+  final Function setSelected;
+  SudokuGrid(this.grid, this.selectedX, this.selectedY, this.setSelected,
+      this.setMessage);
+
+  @override
+  _SudokuGridState createState() => _SudokuGridState();
+}
+
+class _SudokuGridState extends State<SudokuGrid> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -12,17 +25,31 @@ class SudokuGrid extends StatelessWidget {
           shrinkWrap: true,
           gridDelegate:
               SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 9),
-          itemBuilder: (_, idx) => Container(
-            // color: idx % 2 == 0 ? Colors.red : Colors.blue,
-            child: FittedBox(
-              child: Text(
-                '${((idx ~/ 9) * 10 + idx % 9) % 9 + 1}',
-                style: TextStyle(
-                  color: idx % 2 == 0 ? Colors.black : Colors.blue,
+          itemBuilder: (_, idx) {
+            final int x = idx ~/ 9;
+            final int y = idx % 9;
+            return Container(
+              color: x == widget.selectedX && y == widget.selectedY
+                  ? Colors.pink.shade200.withAlpha(150)
+                  : Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  widget.setSelected(x, y);
+                  widget.setMessage('Button $x, $y pressed');
+                },
+                child: FittedBox(
+                  child: Text(
+                    '${widget.grid[x][y]['value'] <= 0 ? '' : widget.grid[x][y]['value']}',
+                    style: TextStyle(
+                      color: widget.grid[x][y]['prefilled']
+                          ? Colors.black
+                          : Colors.blue,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
           itemCount: 81,
         ),
       ],

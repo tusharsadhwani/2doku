@@ -1,16 +1,91 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import './sudoku_buttons.dart';
 import './sudoku_grid.dart';
 
-class Sudoku extends StatelessWidget {
+class Sudoku extends StatefulWidget {
+  @override
+  _SudokuState createState() => _SudokuState();
+}
+
+class _SudokuState extends State<Sudoku> {
+  // List grid = [
+  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  // ];
+  var grid = List.generate(
+      9, (_) => List.generate(9, (_) => {'value': -1, 'prefilled': false}));
+  int selectedX;
+  int selectedY;
+
+  @override
+  void initState() {
+    super.initState();
+    http.get('https://sugoku.herokuapp.com/board?difficulty=easy').then((res) {
+      setState(() {
+        final data = jsonDecode(res.body);
+        final board = data['board'];
+        print("board: $board");
+        for (int x = 0; x < 9; x++) {
+          for (int y = 0; y < 9; y++) {
+            var val = board[x][y];
+            grid[x][y]['value'] = val;
+            if (val > 0) {
+              grid[x][y]['prefilled'] = true;
+            }
+          }
+        }
+      });
+    });
+  }
+
+  void setSelected(int x, int y) {
+    setState(() {
+      selectedX = x;
+      selectedY = y;
+    });
+  }
+
+  void setGridValue(int value) {
+    final x = selectedX;
+    final y = selectedY;
+    if (x < 0 || x > 8 || y < 0 || y > 8) return;
+    if (grid[x][y]['prefilled']) return;
+    setState(() {
+      grid[x][y]['value'] = value;
+    });
+  }
+
+  String testMessage = 'Test';
+  void setMessage(text) {
+    setState(() {
+      testMessage = text;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Expanded(
-          child: SudokuGrid(),
+          child:
+              SudokuGrid(grid, selectedX, selectedY, setSelected, setMessage),
         ),
-        SudokuButtons(),
+        Text(
+          testMessage,
+          style: TextStyle(color: Colors.red),
+        ),
+        SudokuButtons(setGridValue),
       ],
     );
   }
