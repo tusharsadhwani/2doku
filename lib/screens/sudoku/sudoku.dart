@@ -12,17 +12,6 @@ class Sudoku extends StatefulWidget {
 }
 
 class _SudokuState extends State<Sudoku> {
-  // List grid = [
-  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-  //   [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-  // ];
   var grid = List.generate(
       9, (_) => List.generate(9, (_) => {'value': -1, 'prefilled': false}));
   var markings = List.generate(9, (_) => List.generate(9, (_) => Set<int>()));
@@ -33,8 +22,6 @@ class _SudokuState extends State<Sudoku> {
   @override
   void initState() {
     super.initState();
-    markings[0][0].add(1);
-    markings[0][0].add(8);
     http.get('https://sugoku.herokuapp.com/board?difficulty=easy').then((res) {
       setState(() {
         final data = jsonDecode(res.body);
