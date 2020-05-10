@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../login/login_screen.dart';
 import '../../constants/message_type.dart';
+import '../sudoku/sudoku_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -123,6 +124,7 @@ class _CreateRoomState extends State<CreateRoom> {
     //     builder: (_) => LobbyPage(doc.documentID, newMember.documentID),
     //   ),
     // );
+    Navigator.of(context).pushReplacementNamed(SudokuScreen.routeName);
   }
 
   @override

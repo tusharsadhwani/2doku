@@ -52,7 +52,7 @@ class _SudokuGridState extends State<SudokuGrid> {
               final int y = idx % 9;
               return Container(
                 color: x == widget.selectedX && y == widget.selectedY
-                    ? Colors.pink.shade200.withAlpha(100)
+                    ? Colors.amber.shade200.withAlpha(70)
                     : Colors.transparent,
                 child: InkWell(
                   onTap: () {
@@ -63,9 +63,10 @@ class _SudokuGridState extends State<SudokuGrid> {
                     child: Text(
                       '${widget.grid[x][y]['value'] <= 0 ? '' : widget.grid[x][y]['value']}',
                       style: TextStyle(
+                        fontWeight: FontWeight.w300,
                         color: widget.grid[x][y]['prefilled']
-                            ? Colors.black
-                            : Colors.blue,
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).primaryColor,
                       ),
                     ),
                   ),

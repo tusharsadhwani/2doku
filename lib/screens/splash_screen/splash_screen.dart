@@ -24,7 +24,7 @@ class SplashScreen extends StatelessWidget {
       body: Center(
         child: Text(
           'Sudoku',
-          style: Theme.of(context).textTheme.display4,
+          style: Theme.of(context).textTheme.headline1,
         ),
       ),
     );

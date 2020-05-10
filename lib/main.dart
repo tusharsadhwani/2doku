@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import './screens/splash_screen/splash_screen.dart';
 import './screens/login/login_screen.dart';
 import './screens/home/home_screen.dart';
+import './screens/sudoku/sudoku_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -39,11 +40,11 @@ class MyApp extends StatelessWidget {
           ),
           scaffoldBackgroundColor: Colors.grey.shade900,
           textTheme: TextTheme(
-            body1: TextStyle(color: Colors.white),
-            // body2: TextStyle(color: Colors.white),
+            bodyText1: TextStyle(color: Colors.white),
+            bodyText2: TextStyle(color: Colors.white),
             // subhead: TextStyle(color: Colors.white),
             // display1: GoogleFonts.montserrat(),
-            display4: TextStyle(color: primaryColor),
+            headline1: TextStyle(color: primaryColor),
             button: TextStyle(
               color: Colors.white,
             ),
@@ -65,6 +66,11 @@ class MyApp extends StatelessWidget {
             case HomeScreen.routeName:
               return PageTransition(
                 child: HomeScreen(),
+                type: PageTransitionType.leftToRightWithFade,
+              );
+            case SudokuScreen.routeName:
+              return PageTransition(
+                child: SudokuScreen(),
                 type: PageTransitionType.leftToRightWithFade,
               );
             default:

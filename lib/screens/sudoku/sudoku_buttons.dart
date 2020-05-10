@@ -39,13 +39,16 @@ class SudokuButton extends StatelessWidget {
   final int value;
   final Function setGridValue;
   SudokuButton(this.value, this.setGridValue);
+
   @override
   Widget build(BuildContext context) {
+    const buttonTextStyle =
+        TextStyle(color: Colors.white, fontWeight: FontWeight.w300);
     final radius = BorderRadius.circular(5.0);
     return Container(
       margin: const EdgeInsets.all(2.0),
       decoration: BoxDecoration(
-        color: Colors.grey.shade300,
+        color: Colors.grey.shade800,
         borderRadius: radius,
       ),
       child: Material(
@@ -57,7 +60,10 @@ class SudokuButton extends StatelessWidget {
             width: 50,
             height: 50,
             child: FittedBox(
-              child: Text('$value'),
+              child: Text(
+                '$value',
+                style: buttonTextStyle,
+              ),
             ),
           ),
         ),
@@ -72,13 +78,14 @@ class SudokuModeButton extends StatelessWidget {
   SudokuModeButton(this.markingMode, this.toggleMarkingMode);
   @override
   Widget build(BuildContext context) {
-    const buttonTextStyle = TextStyle(color: Colors.grey);
+    final buttonTextStyle = TextStyle(
+        color: Theme.of(context).primaryColor, fontWeight: FontWeight.w300);
     final radius = BorderRadius.circular(5.0);
     return Container(
       margin: const EdgeInsets.all(2.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: Colors.grey.shade800,
           borderRadius: radius,
         ),
         child: Material(
@@ -95,7 +102,7 @@ class SudokuModeButton extends StatelessWidget {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                       ),
-                      children: const <Widget>[
+                      children: <Widget>[
                         FittedBox(
                           child: Text(
                             'X',
@@ -104,7 +111,7 @@ class SudokuModeButton extends StatelessWidget {
                         ),
                       ],
                     )
-                  : const FittedBox(
+                  : FittedBox(
                       child: Text(
                         'X',
                         style: buttonTextStyle,
