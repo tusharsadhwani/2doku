@@ -6,10 +6,11 @@ class SudokuGrid extends StatefulWidget {
   final List<List<Set>> markings;
   final int selectedX;
   final int selectedY;
-  final Function setMessage;
+  final int opponentSelectedX;
+  final int opponentSelectedY;
   final Function setSelected;
   SudokuGrid(this.grid, this.markings, this.selectedX, this.selectedY,
-      this.setSelected, this.setMessage);
+      this.opponentSelectedX, this.opponentSelectedY, this.setSelected);
 
   @override
   _SudokuGridState createState() => _SudokuGridState();
@@ -53,11 +54,13 @@ class _SudokuGridState extends State<SudokuGrid> {
               return Container(
                 color: x == widget.selectedX && y == widget.selectedY
                     ? Colors.amber.shade200.withAlpha(70)
-                    : Colors.transparent,
+                    : x == widget.opponentSelectedX &&
+                            y == widget.opponentSelectedY
+                        ? Colors.pink.shade200.withAlpha(70)
+                        : Colors.transparent,
                 child: InkWell(
                   onTap: () {
                     widget.setSelected(x, y);
-                    widget.setMessage('Button $x, $y pressed');
                   },
                   child: FittedBox(
                     child: Text(

@@ -1,12 +1,11 @@
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:sudoku/screens/lobby/lobby_screen.dart';
 
 import '../login/login_screen.dart';
-import '../../constants/message_type.dart';
 import '../sudoku/sudoku_screen.dart';
+import '../../models/database.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -81,50 +80,9 @@ class _CreateRoomState extends State<CreateRoom> {
   String adminName;
 
   void createRoom(context) async {
-    if (!createRoomForm.currentState.validate()) return;
-
-    createRoomForm.currentState.save();
-    final adminId = generateUserId();
-    final admin = {
-      'name': adminName,
-      'id': adminId,
-    };
-    final joinMsg = {
-      'msgType': MessageType.ROOM_CREATED,
-      'id': adminId,
-      'name': adminName,
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
-    };
-    final roomCode = generateRoomCode();
-
-    final ref = await Firestore.instance.collection('rooms').add(
-      {
-        'code': roomCode,
-        'admin': adminId,
-      },
-    );
-
-    final doc = await ref.get();
-    print(doc.data);
-
-    final newMember = await Firestore.instance
-        .collection('rooms')
-        .document(doc.documentID)
-        .collection('members')
-        .add(admin);
-
-    await Firestore.instance
-        .collection('rooms')
-        .document(doc.documentID)
-        .collection('updates')
-        .add(joinMsg);
-
-    // Navigator.of(context).pushReplacement(
-    //   MaterialPageRoute(
-    //     builder: (_) => LobbyPage(doc.documentID, newMember.documentID),
-    //   ),
-    // );
-    Navigator.of(context).pushReplacementNamed(SudokuScreen.routeName);
+    final db = Provider.of<Database>(context, listen: false);
+    await db.createRoom(name: adminName);
+    Navigator.of(context).pushReplacementNamed(LobbyScreen.routeName);
   }
 
   @override
@@ -165,55 +123,16 @@ class JoinRoom extends StatefulWidget {
 class _JoinRoomState extends State<JoinRoom> {
   var joinRoomForm = GlobalKey<FormState>();
   String userName;
-  String roomId;
   int roomCode;
 
-  void joinRoom(context) {
+  void joinRoom(context) async {
     if (!joinRoomForm.currentState.validate()) return;
 
     joinRoomForm.currentState.save();
-    final userId = generateUserId();
-    final user = {
-      'name': userName,
-      'id': userId,
-    };
-    final joinMsg = {
-      'msgType': MessageType.USER_JOINED,
-      'id': userId,
-      'name': userName,
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
-    };
+    final db = Provider.of<Database>(context, listen: false);
+    await db.joinRoom(name: userName, roomCode: roomCode);
 
-    Firestore.instance
-        .collection('rooms')
-        .where('code', isEqualTo: roomCode)
-        .getDocuments()
-        .then(
-      (snapshot) async {
-        if (snapshot.documents.length == 0) {
-          showAlert(context, "This room doesn't exist");
-        } else {
-          roomId = snapshot.documents[0].documentID;
-          final newMember = await Firestore.instance
-              .collection('rooms')
-              .document(roomId)
-              .collection('members')
-              .add(user);
-
-          await Firestore.instance
-              .collection('rooms')
-              .document(roomId)
-              .collection('updates')
-              .add(joinMsg);
-
-          // Navigator.of(context).pushReplacement(
-          //   MaterialPageRoute(
-          //     builder: (_) => LobbyPage(roomId, newMember.documentID),
-          //   ),
-          // );
-        }
-      },
-    );
+    Navigator.of(context).pushReplacementNamed(SudokuScreen.routeName);
   }
 
   @override
@@ -261,9 +180,6 @@ class _JoinRoomState extends State<JoinRoom> {
     );
   }
 }
-
-int generateUserId() => Random().nextInt(100000);
-int generateRoomCode() => Random().nextInt(100000000);
 
 void showAlert(BuildContext context, String s) {
   showDialog(

@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/models/database.dart';
 
 import './screens/splash_screen/splash_screen.dart';
 import './screens/login/login_screen.dart';
 import './screens/home/home_screen.dart';
+import './screens/lobby/lobby_screen.dart';
 import './screens/sudoku/sudoku_screen.dart';
 
 void main() => runApp(MyApp());
@@ -18,7 +20,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider<FirebaseUser>.value(
-            value: FirebaseAuth.instance.onAuthStateChanged)
+            value: FirebaseAuth.instance.onAuthStateChanged),
+        Provider.value(value: Database()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -71,6 +74,11 @@ class MyApp extends StatelessWidget {
             case SudokuScreen.routeName:
               return PageTransition(
                 child: SudokuScreen(),
+                type: PageTransitionType.leftToRightWithFade,
+              );
+            case LobbyScreen.routeName:
+              return PageTransition(
+                child: LobbyScreen(),
                 type: PageTransitionType.leftToRightWithFade,
               );
             default:
