@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../login/login_screen.dart';
 import '../home/home_screen.dart';
 
 Future<void> _checkLogin(BuildContext context) async {
   await Future.delayed(Duration(seconds: 1));
-  final user = Provider.of<FirebaseUser>(context, listen: false);
-  if (user != null) {
+
+  try {
+    final googleUser = await GoogleSignIn().signInSilently();
+    print('Logged in as, $googleUser');
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    await FirebaseAuth.instance.signInWithCredential(credential);
     Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-  } else {
+  } catch (error) {
+    print('Not Logged In');
     Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
   }
 }
