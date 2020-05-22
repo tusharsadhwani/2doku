@@ -6,7 +6,7 @@ import '../login/login_screen.dart';
 import '../home/home_screen.dart';
 
 Future<void> _checkLogin(BuildContext context) async {
-  await Future.delayed(Duration(seconds: 1));
+  await Future.delayed(Duration(milliseconds: 500));
 
   try {
     final googleUser = await GoogleSignIn().signInSilently();

@@ -28,12 +28,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           appBarTheme: AppBarTheme(
             brightness: Brightness.dark,
-            // textTheme: TextTheme(
-            //   title: TextStyle(
-            //     color: Colors.white,
-            //     fontSize: 20,
-            //   ),
-            // ),
           ),
           accentColor: Colors.white,
           primaryColor: primaryColor,
@@ -42,12 +36,17 @@ class MyApp extends StatelessWidget {
             buttonColor: primaryColor,
           ),
           scaffoldBackgroundColor: Colors.grey.shade900,
+          inputDecorationTheme: InputDecorationTheme(
+            labelStyle: TextStyle(color: Colors.white60),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white60),
+            ),
+          ),
           textTheme: TextTheme(
+            headline1: TextStyle(color: primaryColor),
             bodyText1: TextStyle(color: Colors.white),
             bodyText2: TextStyle(color: Colors.white),
-            // subhead: TextStyle(color: Colors.white),
-            // display1: GoogleFonts.montserrat(),
-            headline1: TextStyle(color: primaryColor),
+            subtitle1: TextStyle(color: Colors.white),
             button: TextStyle(
               color: Colors.white,
             ),
