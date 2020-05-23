@@ -34,9 +34,11 @@ class SplashScreen extends StatelessWidget {
 
     return Scaffold(
       body: Center(
-        child: Text(
-          'Sudoku',
-          style: Theme.of(context).textTheme.headline1,
+        child: FittedBox(
+          child: Text(
+            'Sudoku',
+            style: Theme.of(context).textTheme.headline1,
+          ),
         ),
       ),
     );

@@ -35,9 +35,14 @@ class LoginScreen extends StatelessWidget {
             flex: 2,
           ),
           Center(
-            child: Text(
-              'Sudoku',
-              style: Theme.of(context).textTheme.headline1,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: FittedBox(
+                child: Text(
+                  'Sudoku',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              ),
             ),
           ),
           Spacer(flex: 1),

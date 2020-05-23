@@ -46,10 +46,12 @@ class _HomeScreenState extends State<HomeScreen>
                 elevation: 0,
                 highlightElevation: 0,
                 onPressed: () => _handleSignOut(context),
-                child: Text(
-                  'Logout',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                child: FittedBox(
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ),
@@ -57,9 +59,14 @@ class _HomeScreenState extends State<HomeScreen>
             Expanded(
               flex: 1,
               child: Center(
-                child: Text(
-                  'Create Room',
-                  style: Theme.of(context).textTheme.headline2,
+                child: FittedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Create Room',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -116,6 +123,7 @@ class _CreateRoomState extends State<CreateRoom> {
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
+            SizedBox(height: 10),
             TextFormField(
               decoration: InputDecoration(labelText: "Your Name"),
               validator: (value) {
@@ -174,6 +182,7 @@ class _JoinRoomState extends State<JoinRoom> {
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
+            SizedBox(height: 10),
             TextFormField(
               decoration: InputDecoration(
                 labelText: "Room Code",
@@ -190,7 +199,7 @@ class _JoinRoomState extends State<JoinRoom> {
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (_) => nameNode.requestFocus(),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
             TextFormField(
               decoration: InputDecoration(
                 labelText: "Your Name",

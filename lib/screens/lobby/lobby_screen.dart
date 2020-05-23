@@ -54,18 +54,28 @@ class _LobbyScreenState extends State<LobbyScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Spacer(flex: 2),
-                Text(
-                  "Room code:",
-                  style: Theme.of(context).textTheme.headline2,
+                FittedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "Room code:",
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                  ),
                 ),
                 FlatButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   onPressed: () => _copyRoomCode(context),
-                  child: Text(
-                    "$roomCode",
-                    style: Theme.of(context).textTheme.headline2,
+                  child: FittedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        "$roomCode",
+                        style: Theme.of(context).textTheme.headline2,
+                      ),
+                    ),
                   ),
                 ),
                 Spacer(flex: 1),
@@ -74,9 +84,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
                       AlwaysStoppedAnimation(Theme.of(context).primaryColor),
                 ),
                 SizedBox(height: 10),
-                Text(
-                  "Waiting for the other player to join...",
-                  style: TextStyle(fontSize: 20),
+                FittedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Waiting for the other player to join...",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
                 ),
                 Spacer(flex: 2),
               ],
