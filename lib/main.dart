@@ -31,9 +31,15 @@ class MyApp extends StatelessWidget {
           ),
           accentColor: Colors.white,
           primaryColor: primaryColor,
-          buttonTheme: ButtonThemeData(
-            textTheme: ButtonTextTheme.accent,
-            buttonColor: primaryColor,
+          colorScheme: ColorScheme.light(
+            primary: primaryColor,
+          ),
+          dialogTheme: DialogTheme(
+            backgroundColor: Colors.grey.shade900,
+            titleTextStyle: TextStyle(
+              color: primaryColor,
+              fontSize: 24.0,
+            ),
           ),
           canvasColor: Colors.grey.shade900,
           scaffoldBackgroundColor: Colors.grey.shade900,
@@ -53,15 +59,12 @@ class MyApp extends StatelessWidget {
             bodyText1: TextStyle(color: Colors.white),
             bodyText2: TextStyle(color: Colors.white),
             subtitle1: TextStyle(color: Colors.white),
-            button: TextStyle(
-              color: Colors.white,
-            ),
           ),
         ),
-        initialRoute: '/',
+        initialRoute: SplashScreen.routeName,
         onGenerateRoute: (settings) {
           switch (settings.name) {
-            case '/':
+            case SplashScreen.routeName:
               return PageTransition(
                 child: SplashScreen(),
                 type: PageTransitionType.fade,

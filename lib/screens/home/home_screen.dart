@@ -68,8 +68,8 @@ class _HomeScreenState extends State<HomeScreen>
               child: Column(
                 children: <Widget>[
                   TabBar(
-                    indicator:
-                        BoxDecoration(color: Theme.of(context).primaryColor),
+                    indicatorColor: Theme.of(context).primaryColor,
+                    labelColor: Theme.of(context).primaryColor,
                     controller: tabController,
                     tabs: <Widget>[
                       Tab(text: 'Create'),

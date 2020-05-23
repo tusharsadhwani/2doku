@@ -27,6 +27,7 @@ Future<void> _checkLogin(BuildContext context) async {
 }
 
 class SplashScreen extends StatelessWidget {
+  static const routeName = '/';
   @override
   Widget build(BuildContext context) {
     _checkLogin(context);
