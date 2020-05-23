@@ -35,15 +35,21 @@ class MyApp extends StatelessWidget {
             textTheme: ButtonTextTheme.accent,
             buttonColor: primaryColor,
           ),
+          canvasColor: Colors.grey.shade900,
           scaffoldBackgroundColor: Colors.grey.shade900,
           inputDecorationTheme: InputDecorationTheme(
             labelStyle: TextStyle(color: Colors.white60),
-            enabledBorder: UnderlineInputBorder(
+            border: OutlineInputBorder(),
+            enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white60),
             ),
           ),
           textTheme: TextTheme(
             headline1: TextStyle(color: primaryColor),
+            headline2: TextStyle(
+              color: primaryColor,
+              fontWeight: FontWeight.w300,
+            ),
             bodyText1: TextStyle(color: Colors.white),
             bodyText2: TextStyle(color: Colors.white),
             subtitle1: TextStyle(color: Colors.white),

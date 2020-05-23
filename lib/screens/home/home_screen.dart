@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku/screens/lobby/lobby_screen.dart';
+import 'package:sudoku/widgets/action_button.dart';
 
 import '../login/login_screen.dart';
 import '../sudoku/sudoku_screen.dart';
@@ -33,37 +34,58 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("New Room"),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () => _handleSignOut(context),
-            child: Text('Logout'),
-          )
-        ],
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TabBar(
-                indicator: BoxDecoration(color: Theme.of(context).primaryColor),
-                controller: tabController,
-                tabs: <Widget>[
-                  Tab(text: 'Create'),
-                  Tab(text: 'Join'),
-                ],
-              ),
-              Container(
-                height: 300,
-                child: TabBarView(
-                  controller: tabController,
-                  children: [CreateRoom(), JoinRoom()],
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+              child: FloatingActionButton(
+                backgroundColor: Theme.of(context).canvasColor,
+                splashColor: Colors.black,
+                elevation: 0,
+                highlightElevation: 0,
+                onPressed: () => _handleSignOut(context),
+                child: Text(
+                  'Logout',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: Text(
+                  'Create Room',
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Column(
+                children: <Widget>[
+                  TabBar(
+                    indicator:
+                        BoxDecoration(color: Theme.of(context).primaryColor),
+                    controller: tabController,
+                    tabs: <Widget>[
+                      Tab(text: 'Create'),
+                      Tab(text: 'Join'),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      controller: tabController,
+                      children: [CreateRoom(), JoinRoom()],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -91,7 +113,8 @@ class _CreateRoomState extends State<CreateRoom> {
       padding: const EdgeInsets.all(16.0),
       child: Form(
         key: createRoomForm,
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
             TextFormField(
               decoration: InputDecoration(labelText: "Your Name"),
@@ -104,9 +127,9 @@ class _CreateRoomState extends State<CreateRoom> {
               },
             ),
             SizedBox(height: 10),
-            RaisedButton(
+            ActionButton(
               onPressed: () => createRoom(context),
-              child: Text('Create Room'),
+              text: 'Create Room',
             ),
           ],
         ),
@@ -124,6 +147,13 @@ class _JoinRoomState extends State<JoinRoom> {
   var joinRoomForm = GlobalKey<FormState>();
   String userName;
   int roomCode;
+  FocusNode nameNode;
+
+  @override
+  void initState() {
+    super.initState();
+    nameNode = FocusNode();
+  }
 
   void joinRoom(context) async {
     if (!joinRoomForm.currentState.validate()) return;
@@ -141,7 +171,8 @@ class _JoinRoomState extends State<JoinRoom> {
       padding: const EdgeInsets.all(16.0),
       child: Form(
         key: joinRoomForm,
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
             TextFormField(
               decoration: InputDecoration(
@@ -156,11 +187,15 @@ class _JoinRoomState extends State<JoinRoom> {
               onSaved: (value) {
                 roomCode = int.parse(value);
               },
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (_) => nameNode.requestFocus(),
             ),
+            SizedBox(height: 10),
             TextFormField(
               decoration: InputDecoration(
                 labelText: "Your Name",
               ),
+              focusNode: nameNode,
               validator: (value) {
                 if (value.length == 0) return "Enter your name";
                 return null;
@@ -170,9 +205,9 @@ class _JoinRoomState extends State<JoinRoom> {
               },
             ),
             SizedBox(height: 10),
-            RaisedButton(
+            ActionButton(
               onPressed: () => joinRoom(context),
-              child: Text('Join Room'),
+              text: 'Join Room',
             )
           ],
         ),

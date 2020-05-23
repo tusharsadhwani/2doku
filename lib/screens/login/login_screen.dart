@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../home/home_screen.dart';
+import '../../widgets/action_button.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login';
@@ -27,14 +28,28 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Login"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () => _handleSignIn(context),
-          child: Text("Login"),
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Spacer(
+            flex: 2,
+          ),
+          Center(
+            child: Text(
+              'Sudoku',
+              style: Theme.of(context).textTheme.headline1,
+            ),
+          ),
+          Spacer(flex: 1),
+          Center(
+            child: ActionButton(
+              onPressed: () => _handleSignIn(context),
+              text: 'Login',
+              fontSize: 32.0,
+            ),
+          ),
+          Spacer(flex: 2),
+        ],
       ),
     );
   }
