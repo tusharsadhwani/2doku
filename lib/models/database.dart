@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
@@ -22,15 +23,16 @@ class Database {
     final doc = await Firestore.instance.collection('games').add({
       'grid': jsonEncode(prefilledGrid),
       'roomCode': roomCode,
-      'player_2_joined': false,
+      'player_1': (await FirebaseAuth.instance.currentUser()).uid,
     });
     id = doc.documentID;
   }
 
-  Future<void> joinRoom({@required name, @required roomCode}) async {
+  Future<bool> joinRoom({@required name, @required roomCode}) async {
     this.name = name;
     this.roomCode = roomCode;
-    player1 = false;
+
+    final userData = await FirebaseAuth.instance.currentUser();
 
     final snapshot = await Firestore.instance
         .collection('games')
@@ -41,9 +43,26 @@ class Database {
       id = doc.documentID;
     });
 
+    final room =
+        await Firestore.instance.collection('games').document(id).get();
+    if (room.data['player_1'] == userData.uid) {
+      player1 = true;
+      return true;
+    }
+
+    if (room.data['player_2'] != null) {
+      if (room.data['player_2'] == userData.uid)
+        player1 = false;
+      else
+        return false;
+    }
+
     await Firestore.instance.collection('games').document(id).setData({
-      'player_2_joined': true,
+      'player_2': userData.uid,
     }, merge: true);
+
+    player1 = false;
+    return true;
   }
 }
 

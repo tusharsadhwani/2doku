@@ -20,8 +20,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider<FirebaseUser>.value(
-            value: FirebaseAuth.instance.onAuthStateChanged),
-        Provider.value(value: Database()),
+          value: FirebaseAuth.instance.onAuthStateChanged,
+        ),
+        Provider(create: (_) => Database()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

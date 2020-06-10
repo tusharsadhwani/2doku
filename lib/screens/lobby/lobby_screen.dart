@@ -40,7 +40,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   void startGame(DocumentSnapshot snapshot) {
-    if (snapshot.data['player_2_joined'])
+    if (snapshot.data['player_2'])
       Navigator.of(context).pushReplacementNamed(SudokuScreen.routeName);
   }
 

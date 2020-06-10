@@ -168,9 +168,12 @@ class _JoinRoomState extends State<JoinRoom> {
 
     joinRoomForm.currentState.save();
     final db = Provider.of<Database>(context, listen: false);
-    await db.joinRoom(name: userName, roomCode: roomCode);
+    final joined = await db.joinRoom(name: userName, roomCode: roomCode);
 
-    Navigator.of(context).pushReplacementNamed(SudokuScreen.routeName);
+    if (joined)
+      Navigator.of(context).pushReplacementNamed(SudokuScreen.routeName);
+    else
+      showAlert(context, 'The room is already full.');
   }
 
   @override
