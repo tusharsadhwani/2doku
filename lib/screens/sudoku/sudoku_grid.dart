@@ -20,11 +20,11 @@ class SudokuGrid extends StatelessWidget {
         title: Text('Leave Game?'),
         content: Text('Are you sure you want to leave this game?'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text('Cancel'),
           ),
-          FlatButton(
+          TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             child: Text('Yes'),
           ),

@@ -40,16 +40,16 @@ class _SudokuState extends State<Sudoku> {
           grid = db.prefilledGrid;
         });
 
-      subscription = Firestore.instance
+      subscription = FirebaseFirestore.instance
           .collection('games')
-          .document(db.id)
+          .doc(db.id)
           .collection('updates')
           .snapshots()
           .listen(firestoreUpdate);
 
-      gridSubscription = Firestore.instance
+      gridSubscription = FirebaseFirestore.instance
           .collection('games')
-          .document(db.id)
+          .doc(db.id)
           .snapshots()
           .listen(fillGrid);
     });
@@ -63,8 +63,8 @@ class _SudokuState extends State<Sudoku> {
   }
 
   void firestoreUpdate(QuerySnapshot event) {
-    event.documentChanges.forEach((change) {
-      final Map<String, dynamic> data = change.document.data;
+    event.docChanges.forEach((change) {
+      final Map<String, dynamic> data = change.doc.data();
       final String updateType = data['type'];
       switch (updateType) {
         case UpdateType.SET_GRID_VALUE:
@@ -109,8 +109,8 @@ class _SudokuState extends State<Sudoku> {
     });
   }
 
-  void fillGrid(DocumentSnapshot doc) {
-    Map data = doc.data;
+  void fillGrid(DocumentSnapshot<Map<String, dynamic>> doc) {
+    Map data = doc.data();
     List firestoreGrid = jsonDecode(data['grid']);
     final newGrid = List.generate(
         9, (_) => List.generate(9, (_) => {'value': -1, 'prefilled': false}));
@@ -136,9 +136,9 @@ class _SudokuState extends State<Sudoku> {
   }
 
   void firestoreSetSelected(int x, int y) {
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('games')
-        .document(db.id)
+        .doc(db.id)
         .collection('updates')
         .add({
       'type': UpdateType.CHANGE_PLAYER_SELECTED_CELL,
@@ -156,9 +156,9 @@ class _SudokuState extends State<Sudoku> {
   }
 
   void firestoreSetMarking(int x, int y, int value) {
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('games')
-        .document(db.id)
+        .doc(db.id)
         .collection('updates')
         .add({
       'type': UpdateType.SET_MARKING,
@@ -182,9 +182,9 @@ class _SudokuState extends State<Sudoku> {
   }
 
   void firestoreUnsetMarking(int x, int y, int value) {
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('games')
-        .document(db.id)
+        .doc(db.id)
         .collection('updates')
         .add({
       'type': UpdateType.UNSET_MARKING,
@@ -207,9 +207,9 @@ class _SudokuState extends State<Sudoku> {
   }
 
   void firestoreSetGridValue(int x, int y, int value) {
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('games')
-        .document(db.id)
+        .doc(db.id)
         .collection('updates')
         .add({
       'type': UpdateType.SET_GRID_VALUE,
@@ -233,9 +233,9 @@ class _SudokuState extends State<Sudoku> {
   }
 
   void firestoreUnsetGridValue(int x, int y) {
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('games')
-        .document(db.id)
+        .doc(db.id)
         .collection('updates')
         .add({
       'type': UpdateType.UNSET_GRID_VALUE,

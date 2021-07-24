@@ -19,9 +19,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
   void initState() {
     final db = Provider.of<Database>(context, listen: false);
     roomCode = db.roomCode;
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('games')
-        .document(db.id)
+        .doc(db.id)
         .snapshots()
         .listen(startGame);
 
@@ -32,15 +32,15 @@ class _LobbyScreenState extends State<LobbyScreen> {
     Clipboard.setData(
       ClipboardData(text: '$roomCode'),
     );
-    Scaffold.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Room code copied to clipboard!'),
       ),
     );
   }
 
-  void startGame(DocumentSnapshot snapshot) {
-    if (snapshot.data['player_2'])
+  void startGame(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    if (snapshot.data()['player_2'])
       Navigator.of(context).pushReplacementNamed(SudokuScreen.routeName);
   }
 
@@ -63,9 +63,13 @@ class _LobbyScreenState extends State<LobbyScreen> {
                     ),
                   ),
                 ),
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                TextButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
                   ),
                   onPressed: () => _copyRoomCode(context),
                   child: FittedBox(
